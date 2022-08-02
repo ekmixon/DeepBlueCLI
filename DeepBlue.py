@@ -24,12 +24,11 @@ def filter(str):
     return ''.join([c for c in str if ord(c) > 31 or ord(c) == 9])
 
 def CheckRegex(regexes,command):
-    string=""
-    for regex in regexes:
-        if (regex[0] == "0"):
-            if re.search(regex[1],command,re.IGNORECASE):
-                string+=" - "+regex[2]+"\n"
-    return(string)
+    return "".join(
+        f" - {regex[2]}" + "\n"
+        for regex in regexes
+        if (regex[0] == "0") and re.search(regex[1], command, re.IGNORECASE)
+    )
 
 def CheckObfu(cli,minpercent,minlength):
     string=""
@@ -42,7 +41,7 @@ def CheckObfu(cli,minpercent,minlength):
         percent =((length1-length2)/length1)
         if (percent < minpercent):
             percent=(round(percent,2))*100
-            string += " - Potential command obfuscation: "+str(int(percent))+"% alpha characters"
+            string += f" - Potential command obfuscation: {int(percent)}% alpha characters"
     return(string)
 
 def CheckCommand(time, log, eventid, cli):
